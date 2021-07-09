@@ -1,0 +1,16 @@
+{
+  "name": "tree-sitter-zsh",
+  "version": "1.0.0",
+  "main": "bindings/node",
+  "license": "MIT",
+  "dependencies": {
+    "nan": "^2.14.2",
+    "tree-sitter-bash": "github:tree-sitter/tree-sitter-bash#0.19.0"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.20.0"
+  },
+  "scripts": {
+    "build": "tree-sitter generate"
+  }
+}
