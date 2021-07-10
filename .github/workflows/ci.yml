@@ -1,0 +1,20 @@
+name: CI Workflow
+on:
+  - push
+
+jobs:
+  build:
+    name: CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Zsh
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zsh
+      - name: Install node modules
+        run: yarn
+      - name: Run unit tests
+        run: yarn test
