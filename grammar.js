@@ -1,4 +1,4 @@
-const bashGrammar = require('../tree-sitter-bash/grammar');
+const bashGrammar = require('tree-sitter-bash/grammar');
 
 module.exports = grammar(bashGrammar, {
   name: 'zsh',
