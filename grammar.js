@@ -48,15 +48,20 @@ module.exports = grammar(bashGrammar, {
           '%',
           '%%',
           ':#',
-          ':|',
-          ':*',
-          ':^',
-          ':^^',
         ),
         optional(choice(
           $._literal,
           $.regex,
         )),
+      ),
+      seq(
+        choice(
+          ':|',
+          ':*',
+          ':^',
+          ':^^',
+        ),
+        optional($.word),
       ),
       seq(
         choice(

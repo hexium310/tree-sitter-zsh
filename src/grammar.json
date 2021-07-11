@@ -2541,7 +2541,38 @@
                   {
                     "type": "STRING",
                     "value": ":#"
+                  }
+                ]
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "SYMBOL",
+                        "name": "_literal"
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "regex"
+                      }
+                    ]
                   },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
                   {
                     "type": "STRING",
                     "value": ":|"
@@ -2564,17 +2595,8 @@
                 "type": "CHOICE",
                 "members": [
                   {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "SYMBOL",
-                        "name": "_literal"
-                      },
-                      {
-                        "type": "SYMBOL",
-                        "name": "regex"
-                      }
-                    ]
+                    "type": "SYMBOL",
+                    "name": "word"
                   },
                   {
                     "type": "BLANK"
