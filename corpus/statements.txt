@@ -302,9 +302,9 @@ Test commands with regexes
 =============================
 
 [[ "35d8b" =~ ^[0-9a-fA-F] ]]
-[[ $CMD =~ (^|;)update_terminal_cwd($|;) ]]
+[[ $CMD =~ (^|\;)update_terminal_cwd($|\;) ]]
 [[ ! " ${completions[*]} " =~ " $alias_cmd " ]]
-! [[ "$a" =~ ^a|b\ *c|d$ ]]
+! [[ "$a" =~ ^(a|b)\ *(c|d)$ ]]
 [[ "$1" =~ ^${var}${var}*=..* ]]
 [[ "$1" =~ ^\-${var}+ ]]
 [[ ${var1} == *${var2}* ]]

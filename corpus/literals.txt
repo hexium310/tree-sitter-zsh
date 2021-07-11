@@ -19,14 +19,12 @@ Words with special characters
 =============================
 
 echo {o[k]}
-echo }}}
-echo ]]] ===
+echo ]]] \===
 
 ---
 
 (program
   (command (command_name (word)) (concatenation (word) (word)))
-  (command (command_name (word)) (concatenation))
   (command (command_name (word)) (concatenation) (word)))
 
 =============================
