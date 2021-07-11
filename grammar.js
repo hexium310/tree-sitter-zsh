@@ -12,7 +12,7 @@ module.exports = grammar(bashGrammar, {
       optional(
         seq(
           '(',
-          repeat($.parameter_expansion_flag),
+          alias(repeat($._parameter_expansion_flag), $.parameter_expansion_flag),
           ')',
         ),
       ),
@@ -111,8 +111,8 @@ module.exports = grammar(bashGrammar, {
       ),
       ']',
     ),
-    parameter_expansion_flag: $ => choice(
-      /[#%@AabcCDefFiklnoOPQtuUvVwWXz0p~mSBEMNR]/,
+    _parameter_expansion_flag: $ => choice(
+      /[#%@AabcCDefFiknoOPQtuUvVwWXz0p~mSBEMNR]/,
       /g.[coe]+./,
       /q(q{1,2}|\+)?/,
       /Z.[cCn]+./,

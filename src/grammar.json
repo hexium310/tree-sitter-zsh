@@ -2113,11 +2113,16 @@
                   "value": "("
                 },
                 {
-                  "type": "REPEAT",
+                  "type": "ALIAS",
                   "content": {
-                    "type": "SYMBOL",
-                    "name": "parameter_expansion_flag"
-                  }
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_parameter_expansion_flag"
+                    }
+                  },
+                  "named": true,
+                  "value": "parameter_expansion_flag"
                 },
                 {
                   "type": "STRING",
@@ -2827,12 +2832,12 @@
         }
       ]
     },
-    "parameter_expansion_flag": {
+    "_parameter_expansion_flag": {
       "type": "CHOICE",
       "members": [
         {
           "type": "PATTERN",
-          "value": "[#%@AabcCDefFiklnoOPQtuUvVwWXz0p~mSBEMNR]"
+          "value": "[#%@AabcCDefFiknoOPQtuUvVwWXz0p~mSBEMNR]"
         },
         {
           "type": "PATTERN",
