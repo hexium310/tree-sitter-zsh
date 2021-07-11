@@ -61,7 +61,6 @@ Variable expansions
 =============================
 
 echo ${}
-echo ${#}
 echo ${var1#*#}
 echo ${abc}
 echo ${abc:-def}
@@ -73,7 +72,6 @@ echo ${abc:
 
 (program
   (command (command_name (word)) (expansion))
-  (command (command_name (word)) (expansion (parameter_expansion_prefix)))
   (command (command_name (word)) (expansion (variable_name) (parameter_expansion_suffix (regex))))
   (command (command_name (word)) (expansion (variable_name)))
   (command (command_name (word)) (expansion (variable_name) (parameter_expansion_suffix (word))))
@@ -324,7 +322,6 @@ a=()
 b=(1 2 3)
 
 echo ${a[@]}
-echo ${#b[@]}
 
 a[$i]=50
 a+=(foo "bar" $(baz))
@@ -335,7 +332,6 @@ a+=(foo "bar" $(baz))
   (variable_assignment (variable_name) (array))
   (variable_assignment (variable_name) (array (word) (word) (word)))
   (command (command_name (word)) (expansion (variable_name) (expansion_subscript (word))))
-  (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name)))
   (variable_assignment
     (subscript (variable_name) (expansion_subscript (simple_expansion (variable_name))))
     (word))

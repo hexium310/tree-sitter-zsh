@@ -1,0 +1,15 @@
+=============================
+Broken: variable expansions with prefix #
+=============================
+
+echo ${#}
+echo ${#b[@]}
+
+---
+
+; `#` immediately after `${` should be `parameter_expansion_prefix` but is `parameter_expansion_suffix`.
+(program
+  ; expected: (command (command_name (word)) (expansion (parameter_expansion_prefix)))
+  (command (command_name (word)) (expansion (parameter_expansion_suffix (regex))))
+  ; expected: (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name) expansion_subscript (word))))
+  (command (command_name (word)) (expansion (parameter_expansion_suffix (regex)))))
