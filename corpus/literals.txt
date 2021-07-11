@@ -63,7 +63,6 @@ Variable expansions
 echo ${}
 echo ${#}
 echo ${var1#*#}
-echo ${!abc}
 echo ${abc}
 echo ${abc:-def}
 echo ${abc:- }
@@ -74,13 +73,12 @@ echo ${abc:
 
 (program
   (command (command_name (word)) (expansion))
-  (command (command_name (word)) (expansion))
-  (command (command_name (word)) (expansion (variable_name) (word)))
+  (command (command_name (word)) (expansion (parameter_expansion_prefix)))
+  (command (command_name (word)) (expansion (variable_name) (parameter_expansion_suffix (regex))))
   (command (command_name (word)) (expansion (variable_name)))
-  (command (command_name (word)) (expansion (variable_name)))
-  (command (command_name (word)) (expansion (variable_name) (word)))
-  (command (command_name (word)) (expansion (variable_name)))
-  (command (command_name (word)) (expansion (variable_name))))
+  (command (command_name (word)) (expansion (variable_name) (parameter_expansion_suffix (word))))
+  (command (command_name (word)) (expansion (variable_name) (parameter_expansion_suffix)))
+  (command (command_name (word)) (expansion (variable_name) (parameter_expansion_suffix))))
 
 ===================================
 Variable expansions with operators
@@ -95,13 +93,13 @@ F="${G%% *}"
 (program
   (variable_assignment
     (variable_name)
-    (string (expansion (subscript (variable_name) (word)))))
+    (string (expansion (variable_name) (expansion_subscript (word)) (parameter_expansion_suffix (regex)))))
   (variable_assignment
     (variable_name)
-    (string (expansion (variable_name) (regex))))
+    (string (expansion (variable_name) (parameter_expansion_suffix (regex)))))
   (variable_assignment
     (variable_name)
-    (string (expansion (variable_name) (word) (word)))))
+    (string (expansion (variable_name) (parameter_expansion_suffix (regex))))))
 
 ===================================
 Variable expansions in strings
@@ -118,16 +116,18 @@ A="${b=$c/$d}"
     (string
       (expansion
         (variable_name)
-        (concatenation (simple_expansion (variable_name)) (word)))))
+        (parameter_expansion_suffix
+          (concatenation (simple_expansion (variable_name)) (word))))))
   (variable_assignment
     (variable_name)
     (string
       (expansion
         (variable_name)
-        (concatenation
-          (simple_expansion (variable_name))
-          (word)
-          (simple_expansion (variable_name)))))))
+        (parameter_expansion_suffix
+          (concatenation
+            (simple_expansion (variable_name))
+            (word)
+            (simple_expansion (variable_name))))))))
 
 ===================================
 Variable expansions with regexes
@@ -141,9 +141,9 @@ C=${D/;\ *;|}
 ---
 
 (program
-  (variable_assignment (variable_name) (expansion (variable_name) (regex)))
+  (variable_assignment (variable_name) (expansion (variable_name) (parameter_expansion_suffix (regex))))
   (comment)
-  (variable_assignment (variable_name) (expansion (variable_name) (regex))))
+  (variable_assignment (variable_name) (expansion (variable_name) (parameter_expansion_suffix (regex)))))
 
 ===================================
 Other variable expansion operators
@@ -158,12 +158,12 @@ cat ${BAR} ${ABC=def} ${GHI:?jkl}
   (command
     (command_name (word))
     (expansion (variable_name))
-    (expansion (variable_name) (word))
-    (expansion (variable_name) (word)))
+    (expansion (variable_name) (parameter_expansion_suffix (word)))
+    (expansion (variable_name) (parameter_expansion_suffix (word))))
   (test_command
     (binary_expression
       (string (simple_expansion (variable_name)))
-      (string (expansion (variable_name) (concatenation (word)))))))
+      (string (expansion (variable_name) (parameter_expansion_suffix (regex)))))))
 
 =============================
 Words ending with '$'
@@ -334,10 +334,10 @@ a+=(foo "bar" $(baz))
 (program
   (variable_assignment (variable_name) (array))
   (variable_assignment (variable_name) (array (word) (word) (word)))
-  (command (command_name (word)) (expansion (subscript (variable_name) (word))))
-  (command (command_name (word)) (expansion (subscript (variable_name) (word))))
+  (command (command_name (word)) (expansion (variable_name) (expansion_subscript (word))))
+  (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name)))
   (variable_assignment
-    (subscript (variable_name) (simple_expansion (variable_name)))
+    (subscript (variable_name) (expansion_subscript (simple_expansion (variable_name))))
     (word))
   (variable_assignment
     (variable_name)

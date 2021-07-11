@@ -325,7 +325,7 @@ Test commands with regexes
   (test_command
     (unary_expression
       (binary_expression
-        (string (expansion (subscript (variable_name) (word))))
+        (string (expansion (variable_name) (expansion_subscript (word))))
         (string (simple_expansion (variable_name))))))
   (negated_command
     (test_command
@@ -513,7 +513,7 @@ export "$(echo ${key} | tr [:lower:] [:upper:])=${p_key#*=}"
         (pipeline
           (command (command_name (word)) (expansion (variable_name)))
           (command (command_name (word)) (concatenation (word)) (concatenation (word)))))
-      (expansion (variable_name) (word)))))
+      (expansion (variable_name) (parameter_expansion_suffix (regex))))))
 
 =========================================
 Unset commands
