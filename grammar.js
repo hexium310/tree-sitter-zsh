@@ -2,7 +2,33 @@ const bashGrammar = require('tree-sitter-bash/grammar');
 
 module.exports = grammar(bashGrammar, {
   name: 'zsh',
+  inline: ($, previous) => [
+    ...previous,
+    $._expression_literal,
+  ],
+  conflicts: ($, previous) => [
+    ...previous,
+    [$._subscript],
+  ],
   rules: {
+    number: $ => prec(2, seq(
+      optional('-'),
+      /\d+/,
+    )),
+    glob: $ => prec(-1, repeat1(
+      choice (
+        seq(
+          '[',
+          repeat(choice(
+            /\\[\[\]\(\)\\]/,
+            /[^\[\]\(\)\\]/,
+          )),
+          ']'
+        ),
+        /\\[\[\]\(\)\\]/,
+        /[^\[\]\(\)\\]/,
+      )
+    )),
     subscript: $ => seq(
       $.variable_name,
       $.expansion_subscript,
@@ -95,21 +121,62 @@ module.exports = grammar(bashGrammar, {
         optional(seq('/', $._literal)),
       ),
     )),
-    expansion_subscript: ($, previous) => seq(
+    expansion_subscript: $ => seq(
       '[',
-      repeat1(
+      $._subscript,
+      optional(
         seq(
-          optional(
-            seq(
-              '(',
-              $.subscript_flag,
-              ')'
-            ),
-          ),
-          field('index', prec(2, $._expression)),
+          ',',
+          $._subscript,
         ),
       ),
       ']',
+    ),
+    _subscript: $ => choice(
+      seq(
+        '(',
+        alias(repeat($._subscript_flag), $.subscript_flag),
+        ')',
+        field('index2', $._expression_literal),
+      ),
+      seq(
+        '(',
+        alias($._subscript_flags_with_using_pattern, $.subscript_flag),
+        ')',
+        field('index', repeat(
+          choice(
+            $.expansion,
+            $.simple_expansion,
+            $.glob,
+          ),
+        )),
+      ),
+      field('index', $._expression_literal),
+    ),
+    _expression_literal: $ => choice(
+      choice(
+        $.number,
+        alias(/[A-Za-z_]\w+/, $.variable_name),
+        $._special_variable_name,
+      ),
+      repeat1(choice(
+        seq(
+          repeat(choice(
+            $.expansion,
+            $.simple_expansion,
+          )),
+          $.expansion,
+          choice(
+            $.number,
+            alias(/[A-Za-z_]\w+/, $.variable_name),
+            $._special_variable_name,
+          ),
+        ),
+        prec.right(2, repeat1(choice(
+          $.expansion,
+          $.simple_expansion,
+        ))),
+      )),
     ),
     _parameter_expansion_flag: $ => choice(
       /[#%@AabcCDefFiknoOPQtuUvVwWXz0p~mSBEMNR]/,
@@ -122,10 +189,22 @@ module.exports = grammar(bashGrammar, {
       // TODO: Support using `)` as a string which fills spaces
       /[lr][^)]+/,
     ),
-    subscript_flag: $ => choice(
-      /[wpfrRiIkKe]/,
+    _subscript_flag: $ => choice(
+      /[wpfkKe]/,
       // TODO: Support using `)` as a separator or a expression
       /[snb](\)[^)]+\)|[^)]+)/,
+    ),
+    _subscript_flag_using_pattern: $ => choice(
+      'r',
+      'R',
+      'i',
+      'I',
+    ),
+    // Required to unify a node of subscript flags
+    _subscript_flags_with_using_pattern: $ => seq(
+      repeat($._subscript_flag),
+      $._subscript_flag_using_pattern,
+      repeat(choice($._subscript_flag, $._subscript_flag_using_pattern)),
     ),
   },
 });

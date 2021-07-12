@@ -675,10 +675,56 @@
     "fields": {
       "index": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
           {
-            "type": "_expression",
+            "type": "expansion",
+            "named": true
+          },
+          {
+            "type": "glob",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "simple_expansion",
+            "named": true
+          },
+          {
+            "type": "special_variable_name",
+            "named": true
+          },
+          {
+            "type": "variable_name",
+            "named": true
+          }
+        ]
+      },
+      "index2": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "expansion",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "simple_expansion",
+            "named": true
+          },
+          {
+            "type": "special_variable_name",
+            "named": true
+          },
+          {
+            "type": "variable_name",
             "named": true
           }
         ]
@@ -798,6 +844,11 @@
         ]
       }
     }
+  },
+  {
+    "type": "glob",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "heredoc_body",
@@ -947,6 +998,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "number",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "parameter_expansion_flag",
@@ -1465,6 +1521,10 @@
     "named": false
   },
   {
+    "type": ",",
+    "named": false
+  },
+  {
     "type": "-",
     "named": false
   },
@@ -1617,6 +1677,14 @@
     "named": false
   },
   {
+    "type": "I",
+    "named": false
+  },
+  {
+    "type": "R",
+    "named": false
+  },
+  {
     "type": "[",
     "named": false
   },
@@ -1701,6 +1769,10 @@
     "named": true
   },
   {
+    "type": "i",
+    "named": false
+  },
+  {
     "type": "if",
     "named": false
   },
@@ -1710,6 +1782,10 @@
   },
   {
     "type": "local",
+    "named": false
+  },
+  {
+    "type": "r",
     "named": false
   },
   {
