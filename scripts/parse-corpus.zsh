@@ -13,7 +13,7 @@ parse_file() {
                 }
             }
         }
-        NR == 1 {
+        NR == 1 && ! /^===+/ {
             next_equal_signs()
         }
         /^===+/ {
