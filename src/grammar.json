@@ -3000,6 +3000,24 @@
             {
               "type": "SYMBOL",
               "name": "_special_variable_name"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "@"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "*"
+                  }
+                ]
+              },
+              "named": true,
+              "value": "special_subscript"
             }
           ]
         },

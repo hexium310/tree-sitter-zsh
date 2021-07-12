@@ -158,6 +158,7 @@ module.exports = grammar(bashGrammar, {
         $.number,
         alias(/[A-Za-z_]\w+/, $.variable_name),
         $._special_variable_name,
+        alias(choice('@', '*'), $.special_subscript),
       ),
       repeat1(choice(
         seq(

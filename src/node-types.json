@@ -694,6 +694,10 @@
             "named": true
           },
           {
+            "type": "special_subscript",
+            "named": true
+          },
+          {
             "type": "special_variable_name",
             "named": true
           },
@@ -717,6 +721,10 @@
           },
           {
             "type": "simple_expansion",
+            "named": true
+          },
+          {
+            "type": "special_subscript",
             "named": true
           },
           {
@@ -1798,6 +1806,10 @@
   },
   {
     "type": "regex",
+    "named": true
+  },
+  {
+    "type": "special_subscript",
     "named": true
   },
   {
