@@ -1,8 +1,11 @@
 =============================
-Broken: variable expansions with prefix #
+Broken: variable expansions
 =============================
 
 echo ${#}
+echo ${=}
+echo ${^~#abc}
+echo ${^~+abc}
 echo ${#b[@]}
 
 ---
@@ -11,5 +14,11 @@ echo ${#b[@]}
 (program
   ; expected: (command (command_name (word)) (expansion (parameter_expansion_prefix)))
   (command (command_name (word)) (expansion (parameter_expansion_suffix (regex))))
+  ; expected: (command (command_name (word)) (expansion (parameter_expansion_prefix)))
+  (command (command_name (word)) (expansion (parameter_expansion_suffix)))
+  ; expected: (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name)))
+  (command (command_name (word)) (expansion (parameter_expansion_prefix) (parameter_expansion_suffix (regex))))
+  ; expected: (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name)))
+  (command (command_name (word)) (expansion (parameter_expansion_prefix) (parameter_expansion_suffix (word))))
   ; expected: (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name) expansion_subscript (word))))
   (command (command_name (word)) (expansion (parameter_expansion_suffix (regex)))))
