@@ -59,13 +59,19 @@ Variable expansions
 =============================
 
 echo ${}
+echo ${#}
+echo ${#abc}
+echo ${#abc[@]}
 echo ${^}
 echo ${~}
+echo ${=}
 echo ${^abc}
 echo ${=abc}
 echo ${~abc}
 echo ${+abc}
 echo ${^~abc}
+echo ${^~#abc}
+echo ${^~+abc}
 echo ${var1#*#}
 echo ${abc}
 echo ${abc-def}
@@ -94,7 +100,13 @@ echo ${abc:
 (program
   (command (command_name (word)) (expansion))
   (command (command_name (word)) (expansion (parameter_expansion_prefix)))
+  (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name)))
+  (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name) (expansion_subscript (special_subscript))))
   (command (command_name (word)) (expansion (parameter_expansion_prefix)))
+  (command (command_name (word)) (expansion (parameter_expansion_prefix)))
+  (command (command_name (word)) (expansion (parameter_expansion_prefix)))
+  (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name)))
+  (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name)))
   (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name)))
   (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name)))
   (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name)))

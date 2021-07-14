@@ -43,7 +43,7 @@ module.exports = grammar(bashGrammar, {
         ),
       ),
       optional($.parameter_expansion_prefix),
-      prec.left(3, optional(
+      optional(seq(
         choice(
           $._simple_variable_name,
           $._special_variable_name,
@@ -51,12 +51,12 @@ module.exports = grammar(bashGrammar, {
           $.string,
           $.command_substitution,
         ),
+        repeat($.expansion_subscript),
+        optional($.parameter_expansion_suffix),
       )),
-      repeat($.expansion_subscript),
-      optional($.parameter_expansion_suffix),
       '}',
     ),
-    parameter_expansion_prefix: $ => prec.left(2, choice(
+    parameter_expansion_prefix: $ => token.immediate(prec.left(2, choice(
       seq(
         repeat1(choice('^', '=', '~')),
         optional(choice('#', '+')),
@@ -65,8 +65,8 @@ module.exports = grammar(bashGrammar, {
         repeat(choice('^', '=', '~')),
         choice('#', '+'),
       ),
-    )),
-    parameter_expansion_suffix: $ => prec(1, choice(
+    ))),
+    parameter_expansion_suffix: $ => choice(
       seq(
         choice(
           '#',
@@ -120,7 +120,7 @@ module.exports = grammar(bashGrammar, {
         ),
         optional(seq('/', $._literal)),
       ),
-    )),
+    ),
     expansion_subscript: $ => seq(
       '[',
       $._subscript,
