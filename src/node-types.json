@@ -1008,11 +1008,6 @@
     }
   },
   {
-    "type": "number",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "parameter_expansion_flag",
     "named": true,
     "fields": {}
@@ -1791,6 +1786,10 @@
   {
     "type": "local",
     "named": false
+  },
+  {
+    "type": "number",
+    "named": true
   },
   {
     "type": "r",

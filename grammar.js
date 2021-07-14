@@ -11,10 +11,10 @@ module.exports = grammar(bashGrammar, {
     [$._subscript],
   ],
   rules: {
-    number: $ => prec(2, seq(
+    number: $ => token(prec(1, seq(
       optional('-'),
       /\d+/,
-    )),
+    ))),
     glob: $ => prec(-1, repeat1(
       choice (
         seq(
