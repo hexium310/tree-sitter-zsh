@@ -137,7 +137,7 @@ module.exports = grammar(bashGrammar, {
         '(',
         alias(repeat($._subscript_flag), $.subscript_flag),
         ')',
-        field('index2', $._expression_literal),
+        field('index', $._expression_literal),
       ),
       seq(
         '(',

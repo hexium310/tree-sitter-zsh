@@ -706,36 +706,6 @@
             "named": true
           }
         ]
-      },
-      "index2": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "expansion",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "simple_expansion",
-            "named": true
-          },
-          {
-            "type": "special_subscript",
-            "named": true
-          },
-          {
-            "type": "special_variable_name",
-            "named": true
-          },
-          {
-            "type": "variable_name",
-            "named": true
-          }
-        ]
       }
     },
     "children": {
