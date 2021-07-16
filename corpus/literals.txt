@@ -101,7 +101,7 @@ echo ${abc:
   (command (command_name (word)) (expansion))
   (command (command_name (word)) (expansion (parameter_expansion_prefix)))
   (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name)))
-  (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name) (expansion_subscript (special_subscript))))
+  (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name) (subscript (special_subscript))))
   (command (command_name (word)) (expansion (parameter_expansion_prefix)))
   (command (command_name (word)) (expansion (parameter_expansion_prefix)))
   (command (command_name (word)) (expansion (parameter_expansion_prefix)))
@@ -147,7 +147,7 @@ F="${G%% *}"
 (program
   (variable_assignment
     (variable_name)
-    (string (expansion (variable_name) (expansion_subscript (number)) (parameter_expansion_suffix (regex)))))
+    (string (expansion (variable_name) (subscript (number)) (parameter_expansion_suffix (regex)))))
   (variable_assignment
     (variable_name)
     (string (expansion (variable_name) (parameter_expansion_suffix (regex)))))
@@ -485,9 +485,9 @@ a+=(foo "bar" $(baz))
 (program
   (variable_assignment (variable_name) (array))
   (variable_assignment (variable_name) (array (word) (word) (word)))
-  (command (command_name (word)) (expansion (variable_name) (expansion_subscript (special_subscript))))
+  (command (command_name (word)) (expansion (variable_name) (subscript (special_subscript))))
   (variable_assignment
-    (subscript (variable_name) (expansion_subscript (simple_expansion (variable_name))))
+    (subscript (variable_name) (subscript (simple_expansion (variable_name))))
     (word))
   (variable_assignment
     (variable_name)

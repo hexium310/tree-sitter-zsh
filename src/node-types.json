@@ -625,7 +625,28 @@
   {
     "type": "expansion",
     "named": true,
-    "fields": {},
+    "fields": {
+      "index1": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "subscript",
+            "named": true
+          }
+        ]
+      },
+      "index2": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "subscript",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": false,
@@ -636,10 +657,6 @@
         },
         {
           "type": "expansion",
-          "named": true
-        },
-        {
-          "type": "expansion_subscript",
           "named": true
         },
         {
@@ -664,56 +681,6 @@
         },
         {
           "type": "variable_name",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "expansion_subscript",
-    "named": true,
-    "fields": {
-      "index": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "expansion",
-            "named": true
-          },
-          {
-            "type": "glob",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "simple_expansion",
-            "named": true
-          },
-          {
-            "type": "special_subscript",
-            "named": true
-          },
-          {
-            "type": "special_variable_name",
-            "named": true
-          },
-          {
-            "type": "variable_name",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "subscript_flag",
           "named": true
         }
       ]
@@ -1182,13 +1149,58 @@
   {
     "type": "subscript",
     "named": true,
-    "fields": {},
+    "fields": {
+      "index1": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "subscript",
+            "named": true
+          }
+        ]
+      },
+      "index2": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "subscript",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "expansion_subscript",
+          "type": "expansion",
+          "named": true
+        },
+        {
+          "type": "glob",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "simple_expansion",
+          "named": true
+        },
+        {
+          "type": "special_subscript",
+          "named": true
+        },
+        {
+          "type": "special_variable_name",
+          "named": true
+        },
+        {
+          "type": "subscript_flag",
           "named": true
         },
         {

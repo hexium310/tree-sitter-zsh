@@ -8,7 +8,6 @@ module.exports = grammar(bashGrammar, {
   ],
   conflicts: ($, previous) => [
     ...previous,
-    [$._subscript],
   ],
   rules: {
     number: $ => token(prec(1, seq(
@@ -31,7 +30,7 @@ module.exports = grammar(bashGrammar, {
     )),
     subscript: $ => seq(
       $.variable_name,
-      $.expansion_subscript,
+      $._subscripting,
     ),
     expansion: $ => seq(
       '${',
@@ -51,7 +50,7 @@ module.exports = grammar(bashGrammar, {
           $.string,
           $.command_substitution,
         ),
-        repeat($.expansion_subscript),
+        repeat($._subscripting),
         optional($.parameter_expansion_suffix),
       )),
       '}',
@@ -121,13 +120,13 @@ module.exports = grammar(bashGrammar, {
         optional(seq('/', $._literal)),
       ),
     ),
-    expansion_subscript: $ => seq(
+    _subscripting: $ => seq(
       '[',
-      $._subscript,
+      field('index1', alias($._subscript, $.subscript)),
       optional(
         seq(
           ',',
-          $._subscript,
+          field('index2', alias($._subscript, $.subscript)),
         ),
       ),
       ']',
@@ -137,47 +136,36 @@ module.exports = grammar(bashGrammar, {
         '(',
         alias(repeat($._subscript_flag), $.subscript_flag),
         ')',
-        field('index', $._expression_literal),
+        choice(
+          $._expression_literal,
+          alias(choice('@', '*'), $.special_subscript),
+        ),
       ),
       seq(
         '(',
         alias($._subscript_flags_with_using_pattern, $.subscript_flag),
         ')',
-        field('index', repeat(
+        repeat(
           choice(
             $.expansion,
             $.simple_expansion,
             $.glob,
           ),
-        )),
+        ),
       ),
-      field('index', $._expression_literal),
+      choice(
+        $._expression_literal,
+        alias(choice('@', '*'), $.special_subscript),
+      ),
     ),
     _expression_literal: $ => choice(
-      choice(
+      repeat1(prec.left(-1, choice(
+        $.expansion,
+        $.simple_expansion,
         $.number,
         alias(/[A-Za-z_]\w+/, $.variable_name),
         $._special_variable_name,
-        alias(choice('@', '*'), $.special_subscript),
-      ),
-      repeat1(choice(
-        seq(
-          repeat(choice(
-            $.expansion,
-            $.simple_expansion,
-          )),
-          $.expansion,
-          choice(
-            $.number,
-            alias(/[A-Za-z_]\w+/, $.variable_name),
-            $._special_variable_name,
-          ),
-        ),
-        prec.right(2, repeat1(choice(
-          $.expansion,
-          $.simple_expansion,
-        ))),
-      )),
+      ))),
     ),
     _parameter_expansion_flag: $ => choice(
       /[#%@AabcCDefFiknoOPQtuUvVwWXz0p~mSBEMNR]/,
