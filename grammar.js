@@ -163,7 +163,7 @@ module.exports = grammar(bashGrammar, {
         $.expansion,
         $.simple_expansion,
         $.number,
-        alias(/[A-Za-z_]\w+/, $.variable_name),
+        alias(/[A-Za-z_]\w*/, $.variable_name),
         $._special_variable_name,
       ))),
     ),

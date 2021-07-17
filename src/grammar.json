@@ -3060,7 +3060,7 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "PATTERN",
-                    "value": "[A-Za-z_]\\w+"
+                    "value": "[A-Za-z_]\\w*"
                   },
                   "named": true,
                   "value": "variable_name"
