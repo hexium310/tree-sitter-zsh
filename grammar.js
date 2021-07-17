@@ -9,6 +9,29 @@ module.exports = grammar(bashGrammar, {
   conflicts: ($, previous) => [
     ...previous,
   ],
+  precedences: ($, previous) => [
+    ...previous,
+    [$._subscript, $._expression2],
+    [
+      $._subscript,
+      'unary',
+      'literal',
+      'bitwiseShift',
+      'bitwiseAnd',
+      'bitwiseXor',
+      'bitwiseOr',
+      'exponentiation',
+      'multiplicationDivisionModulus',
+      'additionSubtraction',
+      'comparison',
+      'equalityInequality',
+      'logicalAnd',
+      'logicalOrLogicalXor',
+      'ternary',
+      'assignment',
+      'comma',
+    ],
+  ],
   rules: {
     number: $ => token(prec(1, seq(
       optional('-'),
@@ -106,8 +129,8 @@ module.exports = grammar(bashGrammar, {
         ':',
         optional(
           seq(
-            $._expression,
-            optional(seq(':', $._expression)),
+            $._expression2,
+            optional(seq(':', $._expression2)),
           ),
         ),
       ),
@@ -138,6 +161,7 @@ module.exports = grammar(bashGrammar, {
         ')',
         choice(
           $._expression_literal,
+          $._expression2,
           alias(choice('@', '*'), $.special_subscript),
         ),
       ),
@@ -155,11 +179,71 @@ module.exports = grammar(bashGrammar, {
       ),
       choice(
         $._expression_literal,
+        $._expression2,
         alias(choice('@', '*'), $.special_subscript),
       ),
     ),
+    _expression2: $ => prec.left(choice(
+      $._expression_literal,
+      alias($._unary_expression2, $.unary_expression),
+      alias($._binary_expression2, $.binary_expression),
+      alias($._ternary_expression2, $.ternary_expression),
+      alias($._parenthesized_expression2, $.parenthesized_expression),
+    )),
+    _unary_expression2: $ => choice(
+      prec.right('unary', seq(
+        choice(
+          '+', '-', '!', '~',
+        ),
+        $._expression2,
+      )),
+      prec.left('unary', seq(
+        choice('++', '--'),
+        $._expression2,
+      )),
+      prec.right('unary', seq(
+        $._expression2,
+        choice('++', '--'),
+      )),
+    ),
+    _binary_expression2: $ => choice(
+      ...Object.entries({
+        bitwiseShift: ['<<', '>>'],
+        bitwiseAnd: ['&'],
+        bitwiseXor: ['^'],
+        bitwiseOr: ['|'],
+        exponentiation: ['**'],
+        multiplicationDivisionModulus: ['*', '/', '%'],
+        additionSubtraction: ['+', '-'],
+        comparison: ['<', '>', '<=', '>='],
+        equalityInequality: ['==', '!='],
+        logicalAnd: ['&&'],
+        logicalOrLogicalXor: ['||', '^^'],
+        comma: [',']
+      }).map(([precedence, operators]) => {
+        return prec.left(precedence, seq(
+          field('left', $._expression2),
+          field('operator', choice(...operators)),
+          field('right', $._expression2),
+        ));
+      }),
+    ),
+    _ternary_expression2: $ => prec.left('ternary',
+      seq(
+        field('condition', $._expression2),
+        '?',
+        field('consequence', $._expression2),
+        ':',
+        field('alternative', $._expression2),
+      ),
+    ),
+    _parenthesized_expression2: $ => seq(
+      '(',
+      $._expression2,
+      ')'
+    ),
     _expression_literal: $ => choice(
-      repeat1(prec.left(-1, choice(
+      repeat1(prec.left('literal', choice(
         $.expansion,
         $.simple_expansion,
         $.number,
