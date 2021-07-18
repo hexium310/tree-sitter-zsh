@@ -215,7 +215,11 @@ module.exports = grammar(bashGrammar, {
         equalityInequality: ['==', '!='],
         logicalAnd: ['&&'],
         logicalOrLogicalXor: ['||', '^^'],
-        comma: [',']
+        comma: [','],
+        assignment: [
+          '=', '+=', '-=', '*=', '/=', '%=', '&=', '^=',
+          '|=', '<<=', '>>=', '&&=', '||=', '^^=', '**=',
+        ],
       }).map(([precedence, operators]) => {
         return prec.left(precedence, seq(
           field('left', $._expression2),
