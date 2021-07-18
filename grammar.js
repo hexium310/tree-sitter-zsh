@@ -160,7 +160,6 @@ module.exports = grammar(bashGrammar, {
         alias(repeat($._subscript_flag), $.subscript_flag),
         ')',
         choice(
-          $._expression_literal,
           $._expression2,
           alias(choice('@', '*'), $.special_subscript),
         ),
@@ -177,11 +176,8 @@ module.exports = grammar(bashGrammar, {
           ),
         ),
       ),
-      choice(
-        $._expression_literal,
-        $._expression2,
-        alias(choice('@', '*'), $.special_subscript),
-      ),
+      $._expression2,
+      alias(choice('@', '*'), $.special_subscript),
     ),
     _expression2: $ => prec.left(choice(
       $._expression_literal,
@@ -247,10 +243,15 @@ module.exports = grammar(bashGrammar, {
         $.expansion,
         $.simple_expansion,
         $.number,
-        alias(/[A-Za-z_]\w*/, $.variable_name),
+        $._simple_variable_name2,
         $._special_variable_name,
       ))),
     ),
+    _identifier: $ => seq(
+      /[A-Za-z_]/,
+      /\w*/,
+    ),
+    _simple_variable_name2: $ => alias($._identifier, $.variable_name),
     _parameter_expansion_flag: $ => choice(
       /[#%@AabcCDefFiknoOPQtuUvVwWXz0p~mSBEMNR]/,
       /g.[coe]+./,
@@ -263,7 +264,7 @@ module.exports = grammar(bashGrammar, {
       /[lr][^)]+/,
     ),
     _subscript_flag: $ => choice(
-      /[wpfkKe]/,
+      'w', 'p', 'f', 'k', 'K', 'e',
       // TODO: Support using `)` as a separator or a expression
       /[snb](\)[^)]+\)|[^)]+)/,
     ),

@@ -1598,6 +1598,11 @@
     }
   },
   {
+    "type": "variable_name",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "while_statement",
     "named": true,
     "fields": {
@@ -1901,6 +1906,10 @@
     "named": false
   },
   {
+    "type": "K",
+    "named": false
+  },
+  {
     "type": "R",
     "named": false
   },
@@ -1957,6 +1966,10 @@
     "named": false
   },
   {
+    "type": "e",
+    "named": false
+  },
+  {
     "type": "elif",
     "named": false
   },
@@ -1970,6 +1983,10 @@
   },
   {
     "type": "export",
+    "named": false
+  },
+  {
+    "type": "f",
     "named": false
   },
   {
@@ -2005,12 +2022,20 @@
     "named": false
   },
   {
+    "type": "k",
+    "named": false
+  },
+  {
     "type": "local",
     "named": false
   },
   {
     "type": "number",
     "named": true
+  },
+  {
+    "type": "p",
+    "named": false
   },
   {
     "type": "parameter_expansion_prefix",
@@ -2061,8 +2086,8 @@
     "named": false
   },
   {
-    "type": "variable_name",
-    "named": true
+    "type": "w",
+    "named": false
   },
   {
     "type": "while",

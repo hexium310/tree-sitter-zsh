@@ -2938,10 +2938,6 @@
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "_expression_literal"
-                },
-                {
-                  "type": "SYMBOL",
                   "name": "_expression2"
                 },
                 {
@@ -3009,35 +3005,26 @@
           ]
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_expression_literal"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_expression2"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "@"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "*"
-                  }
-                ]
+          "type": "SYMBOL",
+          "name": "_expression2"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "@"
               },
-              "named": true,
-              "value": "special_subscript"
-            }
-          ]
+              {
+                "type": "STRING",
+                "value": "*"
+              }
+            ]
+          },
+          "named": true,
+          "value": "special_subscript"
         }
       ]
     },
@@ -3760,13 +3747,8 @@
                   "name": "number"
                 },
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "PATTERN",
-                    "value": "[A-Za-z_]\\w*"
-                  },
-                  "named": true,
-                  "value": "variable_name"
+                  "type": "SYMBOL",
+                  "name": "_simple_variable_name2"
                 },
                 {
                   "type": "SYMBOL",
@@ -3777,6 +3759,28 @@
           }
         }
       ]
+    },
+    "_identifier": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "[A-Za-z_]"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\w*"
+        }
+      ]
+    },
+    "_simple_variable_name2": {
+      "type": "ALIAS",
+      "content": {
+        "type": "SYMBOL",
+        "name": "_identifier"
+      },
+      "named": true,
+      "value": "variable_name"
     },
     "_parameter_expansion_flag": {
       "type": "CHOICE",
@@ -3815,8 +3819,28 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "PATTERN",
-          "value": "[wpfkKe]"
+          "type": "STRING",
+          "value": "w"
+        },
+        {
+          "type": "STRING",
+          "value": "p"
+        },
+        {
+          "type": "STRING",
+          "value": "f"
+        },
+        {
+          "type": "STRING",
+          "value": "k"
+        },
+        {
+          "type": "STRING",
+          "value": "K"
+        },
+        {
+          "type": "STRING",
+          "value": "e"
         },
         {
           "type": "PATTERN",
