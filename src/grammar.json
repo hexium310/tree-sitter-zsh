@@ -2165,6 +2165,33 @@
                       "name": "_special_variable_name"
                     },
                     {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "\\d+"
+                      },
+                      "named": true,
+                      "value": "variable_name"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "STRING",
+                        "value": "!"
+                      },
+                      "named": true,
+                      "value": "special_variable_name"
+                    },
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "STRING",
+                        "value": "#"
+                      },
+                      "named": true,
+                      "value": "special_variable_name"
+                    },
+                    {
                       "type": "SYMBOL",
                       "name": "expansion"
                     },

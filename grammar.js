@@ -69,6 +69,9 @@ module.exports = grammar(bashGrammar, {
         choice(
           $._simple_variable_name,
           $._special_variable_name,
+          alias(/\d+/, $.variable_name),
+          alias('!', $.special_variable_name),
+          alias('#', $.special_variable_name),
           $.expansion,
           $.string,
           $.command_substitution,
