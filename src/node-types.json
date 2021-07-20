@@ -1082,6 +1082,11 @@
     "fields": {}
   },
   {
+    "type": "parameter_expansion_prefix",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "parameter_expansion_suffix",
     "named": true,
     "fields": {},
@@ -2124,10 +2129,6 @@
   {
     "type": "p",
     "named": false
-  },
-  {
-    "type": "parameter_expansion_prefix",
-    "named": true
   },
   {
     "type": "r",

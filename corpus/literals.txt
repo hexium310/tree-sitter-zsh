@@ -103,7 +103,7 @@ echo ${abc:
 
 (program
   (command (command_name (word)) (expansion))
-  (command (command_name (word)) (expansion (parameter_expansion_prefix)))
+  (command (command_name (word)) (expansion (special_variable_name)))
   (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name)))
   (command (command_name (word)) (expansion (parameter_expansion_prefix) (variable_name) (subscript (special_subscript))))
   (command (command_name (word)) (expansion (parameter_expansion_prefix)))

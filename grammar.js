@@ -81,7 +81,7 @@ module.exports = grammar(bashGrammar, {
       )),
       '}',
     ),
-    parameter_expansion_prefix: $ => token.immediate(prec.left(2, choice(
+    parameter_expansion_prefix: $ => prec.right(choice(
       seq(
         repeat1(choice('^', '=', '~')),
         optional(choice('#', '+')),
@@ -90,7 +90,7 @@ module.exports = grammar(bashGrammar, {
         repeat(choice('^', '=', '~')),
         choice('#', '+'),
       ),
-    ))),
+    )),
     parameter_expansion_suffix: $ => choice(
       seq(
         choice(
