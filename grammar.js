@@ -81,6 +81,10 @@ module.exports = grammar(bashGrammar, {
       )),
       '}',
     ),
+    _history_modifier: $ => seq(
+      ':',
+      $._modifier,
+    ),
     parameter_expansion_prefix: $ => prec.right(choice(
       seq(
         repeat1(choice('^', '=', '~')),
@@ -145,6 +149,7 @@ module.exports = grammar(bashGrammar, {
         ),
         optional(seq('/', $._literal)),
       ),
+      repeat1($._history_modifier),
     ),
     _subscripting: $ => seq(
       '[',
@@ -259,6 +264,16 @@ module.exports = grammar(bashGrammar, {
       /\w*/,
     ),
     _simple_variable_name2: $ => alias($._identifier, $.variable_name),
+    _modifier: $ => choice(
+      'a', 'A', 'c', 'e', 'l', 'p', 'P', 'q', 'Q', 'r', '&', 'u', 'x',
+      'f', 'w',
+      seq(
+        choice('h', 't'),
+        /\d*/,
+      ),
+      // TODO: Support using `}` as a string which fills spaces
+      /[sFW][^}]+/,
+    ),
     _parameter_expansion_flag: $ => choice(
       /[#%@AabcCDefFiknoOPQtuUvVwWXz0p~mSBEMNR]/,
       /g.[coe]+./,

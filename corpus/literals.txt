@@ -305,6 +305,36 @@ echo ${(r:5::0::-:n)abc}
     (expansion (parameter_expansion_flag) (variable_name))))
 
 ===================================
+Variable expansions with modifiers
+===================================
+
+echo ${abc:P}
+echo ${abc:P:h:h2:t:t2}
+echo ${abc:s/aaa/bbb}
+
+---
+
+(program
+  (command
+    (command_name
+      (word))
+    (expansion
+      (variable_name)
+      (parameter_expansion_suffix)))
+  (command
+    (command_name
+      (word))
+    (expansion
+      (variable_name)
+      (parameter_expansion_suffix)))
+  (command
+    (command_name
+      (word))
+    (expansion
+      (variable_name)
+      (parameter_expansion_suffix))))
+
+===================================
 Other variable expansion operators
 ===================================
 

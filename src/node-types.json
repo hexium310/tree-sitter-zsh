@@ -1987,11 +1987,23 @@
     "named": false
   },
   {
+    "type": "A",
+    "named": false
+  },
+  {
     "type": "I",
     "named": false
   },
   {
     "type": "K",
+    "named": false
+  },
+  {
+    "type": "P",
+    "named": false
+  },
+  {
+    "type": "Q",
     "named": false
   },
   {
@@ -2035,8 +2047,16 @@
     "named": false
   },
   {
+    "type": "a",
+    "named": false
+  },
+  {
     "type": "ansii_c_string",
     "named": true
+  },
+  {
+    "type": "c",
+    "named": false
   },
   {
     "type": "case",
@@ -2099,6 +2119,10 @@
     "named": false
   },
   {
+    "type": "h",
+    "named": false
+  },
+  {
     "type": "heredoc_start",
     "named": true
   },
@@ -2119,6 +2143,10 @@
     "named": false
   },
   {
+    "type": "l",
+    "named": false
+  },
+  {
     "type": "local",
     "named": false
   },
@@ -2128,6 +2156,10 @@
   },
   {
     "type": "p",
+    "named": false
+  },
+  {
+    "type": "q",
     "named": false
   },
   {
@@ -2155,6 +2187,10 @@
     "named": true
   },
   {
+    "type": "t",
+    "named": false
+  },
+  {
     "type": "test_operator",
     "named": true
   },
@@ -2164,6 +2200,10 @@
   },
   {
     "type": "typeset",
+    "named": false
+  },
+  {
+    "type": "u",
     "named": false
   },
   {
@@ -2180,6 +2220,10 @@
   },
   {
     "type": "while",
+    "named": false
+  },
+  {
+    "type": "x",
     "named": false
   },
   {
