@@ -37,33 +37,29 @@ module.exports = grammar(bashGrammar, {
       optional('-'),
       /\d+/,
     ))),
-    glob: $ => prec(-1, repeat1(
-      choice (
-        seq(
-          '[',
-          repeat(choice(
-            /\\[\[\]\(\)\\]/,
-            /[^\[\]\(\)\\]/,
-          )),
-          ']'
-        ),
-        /\\[\[\]\(\)\\]/,
-        /[^\[\]\(\)\\]/,
-      )
-    )),
+    glob: $ => prec(-1, repeat1(choice(
+      seq(
+        '[',
+        repeat(choice(
+          /\\[\[\]\(\)\\]/,
+          /[^\[\]\(\)\\]/,
+        )),
+        ']',
+      ),
+      /\\[\[\]\(\)\\]/,
+      /[^\[\]\(\)\\]/,
+    ))),
     subscript: $ => seq(
       $.variable_name,
       $._subscripting,
     ),
     expansion: $ => seq(
       '${',
-      optional(
-        seq(
-          '(',
-          alias(repeat($._parameter_expansion_flag), $.parameter_expansion_flag),
-          ')',
-        ),
-      ),
+      optional(seq(
+        '(',
+        alias(repeat($._parameter_expansion_flag), $.parameter_expansion_flag),
+        ')',
+      )),
       optional(alias($._leading_modifiers, $.modifier)),
       optional(seq(
         choice(
@@ -106,49 +102,26 @@ module.exports = grammar(bashGrammar, {
     )),
     _trailing_modifiers: $ => choice(
       seq(
-        choice(
-          '#',
-          '##',
-          '%',
-          '%%',
-          ':#',
-        ),
+        choice('#', '##', '%', '%%', ':#'),
         optional(choice(
           $._literal,
           $.regex,
         )),
       ),
       seq(
-        choice(
-          ':|',
-          ':*',
-          ':^',
-          ':^^',
-        ),
+        choice(':|', ':*', ':^', ':^^'),
         optional($.word),
       ),
       seq(
-        choice(
-          '-',
-          ':-',
-          '+',
-          ':+',
-          '=',
-          ':=',
-          '::=',
-          '?',
-          ':?',
-        ),
+        choice('-', ':-', '+', ':+', '=', ':=', '::=', '?', ':?'),
         optional($._literal),
       ),
       seq(
         ':',
-        optional(
-          seq(
-            $._expression2,
-            optional(seq(':', $._expression2)),
-          ),
-        ),
+        optional(seq(
+          $._expression2,
+          optional(seq(':', $._expression2)),
+        )),
       ),
       seq(
         choice('/', '//', ':/'),
@@ -163,12 +136,10 @@ module.exports = grammar(bashGrammar, {
     _subscripting: $ => seq(
       '[',
       field('index1', alias($._subscript, $.subscript)),
-      optional(
-        seq(
-          ',',
-          field('index2', alias($._subscript, $.subscript)),
-        ),
-      ),
+      optional(seq(
+        ',',
+        field('index2', alias($._subscript, $.subscript)),
+      )),
       ']',
     ),
     _subscript: $ => choice(
@@ -185,13 +156,11 @@ module.exports = grammar(bashGrammar, {
         '(',
         alias($._subscript_pattern_flags, $.subscript_flag),
         ')',
-        repeat(
-          choice(
-            $.expansion,
-            $.simple_expansion,
-            $.glob,
-          ),
-        ),
+        repeat(choice(
+          $.expansion,
+          $.simple_expansion,
+          $.glob,
+        )),
       ),
       $._expression2,
       alias(choice('@', '*'), $.special_subscript),
@@ -205,9 +174,7 @@ module.exports = grammar(bashGrammar, {
     )),
     _unary_expression2: $ => choice(
       prec.right('unary', seq(
-        choice(
-          '+', '-', '!', '~',
-        ),
+        choice('+', '-', '!', '~'),
         $._expression2,
       )),
       prec.left('unary', seq(
@@ -245,29 +212,25 @@ module.exports = grammar(bashGrammar, {
         ));
       }),
     ),
-    _ternary_expression2: $ => prec.left('ternary',
-      seq(
+    _ternary_expression2: $ => prec.left('ternary',seq(
         field('condition', $._expression2),
         '?',
         field('consequence', $._expression2),
         ':',
         field('alternative', $._expression2),
-      ),
-    ),
+    )),
     _parenthesized_expression2: $ => seq(
       '(',
       $._expression2,
-      ')'
+      ')',
     ),
-    _expression_literal: $ => choice(
-      repeat1(prec.left('literal', choice(
-        $.expansion,
-        $.simple_expansion,
-        $.number,
-        $._simple_variable_name2,
-        $._special_variable_name,
-      ))),
-    ),
+    _expression_literal: $ => repeat1(prec.left('literal', choice(
+      $.expansion,
+      $.simple_expansion,
+      $.number,
+      $._simple_variable_name2,
+      $._special_variable_name,
+    ))),
     _identifier: $ => seq(
       /[A-Za-z_]/,
       /\w*/,
@@ -292,7 +255,7 @@ module.exports = grammar(bashGrammar, {
     _subscript_pattern_flags: $ => prec.left(seq(
       repeat($._subscript_flag),
       choice('r', 'R', 'i', 'I'),
-      repeat($._subscript_pattern_flags)
+      repeat($._subscript_pattern_flags),
     )),
   },
 });
