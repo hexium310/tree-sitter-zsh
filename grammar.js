@@ -128,9 +128,11 @@ module.exports = grammar(bashGrammar, {
     ),
     _subscript: $ => choice(
       seq(
-        '(',
-        alias(repeat($._subscript_flag), $.subscript_flag),
-        ')',
+        optional(seq(
+          '(',
+          alias(repeat($._subscript_flag), $.subscript_flag),
+          ')',
+        )),
         choice(
           $._expression2,
           alias(choice('@', '*'), $.special_subscript),
@@ -146,8 +148,6 @@ module.exports = grammar(bashGrammar, {
           $.glob,
         )),
       ),
-      $._expression2,
-      alias(choice('@', '*'), $.special_subscript),
     ),
     _expression2: $ => prec.left(choice(
       $._expression_literal,
