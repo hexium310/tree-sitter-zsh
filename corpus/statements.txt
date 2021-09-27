@@ -513,7 +513,7 @@ export "$(echo ${key} | tr [:lower:] [:upper:])=${p_key#*=}"
         (pipeline
           (command (command_name (word)) (expansion (variable_name)))
           (command (command_name (word)) (concatenation (word)) (concatenation (word)))))
-      (expansion (variable_name) (parameter_expansion_suffix (regex))))))
+      (expansion (variable_name) (modifier (regex))))))
 
 =========================================
 Unset commands

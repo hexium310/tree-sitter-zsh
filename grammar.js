@@ -64,7 +64,7 @@ module.exports = grammar(bashGrammar, {
           ')',
         ),
       ),
-      optional($.parameter_expansion_prefix),
+      optional(alias($._leading_modifiers, $.modifier)),
       optional(seq(
         choice(
           $._simple_variable_name,
@@ -77,15 +77,24 @@ module.exports = grammar(bashGrammar, {
           $.command_substitution,
         ),
         repeat($._subscripting),
-        optional($.parameter_expansion_suffix),
+        optional(alias($._trailing_modifiers, $.modifier)),
       )),
       '}',
     ),
     _history_modifier: $ => seq(
       ':',
-      $._modifier,
+      choice(
+        'a', 'A', 'c', 'e', 'l', 'p', 'P', 'q', 'Q', 'r', '&', 'u', 'x',
+        'f', 'w',
+        seq(
+          choice('h', 't'),
+          /\d*/,
+        ),
+        // TODO: Support using `}` as a string which fills spaces
+        /[sFW][^}]+/,
+      ),
     ),
-    parameter_expansion_prefix: $ => prec.right(choice(
+    _leading_modifiers: $ => prec.right(choice(
       seq(
         repeat1(choice('^', '=', '~')),
         optional(choice('#', '+')),
@@ -95,7 +104,7 @@ module.exports = grammar(bashGrammar, {
         choice('#', '+'),
       ),
     )),
-    parameter_expansion_suffix: $ => choice(
+    _trailing_modifiers: $ => choice(
       seq(
         choice(
           '#',
@@ -264,16 +273,6 @@ module.exports = grammar(bashGrammar, {
       /\w*/,
     ),
     _simple_variable_name2: $ => alias($._identifier, $.variable_name),
-    _modifier: $ => choice(
-      'a', 'A', 'c', 'e', 'l', 'p', 'P', 'q', 'Q', 'r', '&', 'u', 'x',
-      'f', 'w',
-      seq(
-        choice('h', 't'),
-        /\d*/,
-      ),
-      // TODO: Support using `}` as a string which fills spaces
-      /[sFW][^}]+/,
-    ),
     _parameter_expansion_flag: $ => choice(
       /[#%@AabcCDefFiknoOPQtuUvVwWXz0p~mSBEMNR]/,
       /g.[coe]+./,

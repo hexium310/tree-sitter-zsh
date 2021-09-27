@@ -267,4 +267,4 @@ usage() {
       (redirected_statement
         (command (command_name (word)))
         (heredoc_redirect (heredoc_start)))
-      (heredoc_body (expansion (special_variable_name) (parameter_expansion_suffix (regex)))))))
+      (heredoc_body (expansion (special_variable_name) (modifier (regex)))))))

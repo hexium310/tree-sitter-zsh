@@ -792,15 +792,11 @@
           "named": true
         },
         {
+          "type": "modifier",
+          "named": true
+        },
+        {
           "type": "parameter_expansion_flag",
-          "named": true
-        },
-        {
-          "type": "parameter_expansion_prefix",
-          "named": true
-        },
-        {
-          "type": "parameter_expansion_suffix",
           "named": true
         },
         {
@@ -1054,40 +1050,7 @@
     }
   },
   {
-    "type": "negated_command",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "command",
-          "named": true
-        },
-        {
-          "type": "subshell",
-          "named": true
-        },
-        {
-          "type": "test_command",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "parameter_expansion_flag",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "parameter_expansion_prefix",
-    "named": true,
-    "fields": {}
-  },
-  {
-    "type": "parameter_expansion_suffix",
+    "type": "modifier",
     "named": true,
     "fields": {},
     "children": {
@@ -1136,6 +1099,34 @@
         }
       ]
     }
+  },
+  {
+    "type": "negated_command",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "command",
+          "named": true
+        },
+        {
+          "type": "subshell",
+          "named": true
+        },
+        {
+          "type": "test_command",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "parameter_expansion_flag",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "parenthesized_expression",

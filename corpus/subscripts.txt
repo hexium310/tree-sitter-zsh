@@ -235,7 +235,7 @@ echo ${abc[(s:abc:)$def]}
       (subscript
         (subscript_flag)
         (expansion
-          (parameter_expansion_prefix)
+          (modifier)
           (variable_name))
         (glob))))
   (command
