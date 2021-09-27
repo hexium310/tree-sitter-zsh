@@ -33,26 +33,6 @@ module.exports = grammar(bashGrammar, {
     ],
   ],
   rules: {
-    number: $ => token(prec(1, seq(
-      optional('-'),
-      /\d+/,
-    ))),
-    glob: $ => prec(-1, repeat1(choice(
-      seq(
-        '[',
-        repeat(choice(
-          /\\[\[\]\(\)\\]/,
-          /[^\[\]\(\)\\]/,
-        )),
-        ']',
-      ),
-      /\\[\[\]\(\)\\]/,
-      /[^\[\]\(\)\\]/,
-    ))),
-    subscript: $ => seq(
-      $.variable_name,
-      $._subscripting,
-    ),
     expansion: $ => seq(
       '${',
       optional(seq(
@@ -132,6 +112,10 @@ module.exports = grammar(bashGrammar, {
         optional(seq('/', $._literal)),
       ),
       repeat1($._history_modifier),
+    ),
+    subscript: $ => seq(
+      $.variable_name,
+      $._subscripting,
     ),
     _subscripting: $ => seq(
       '[',
@@ -231,11 +215,6 @@ module.exports = grammar(bashGrammar, {
       $._simple_variable_name2,
       $._special_variable_name,
     ))),
-    _identifier: $ => seq(
-      /[A-Za-z_]/,
-      /\w*/,
-    ),
-    _simple_variable_name2: $ => alias($._identifier, $.variable_name),
     _parameter_expansion_flag: $ => choice(
       /[#%@AabcCDefFiknoOPQtuUvVwWXz0p~mSBEMNR]/,
       /g.[coe]+./,
@@ -257,5 +236,26 @@ module.exports = grammar(bashGrammar, {
       choice('r', 'R', 'i', 'I'),
       repeat($._subscript_pattern_flags),
     )),
+    number: $ => token(prec(1, seq(
+      optional('-'),
+      /\d+/,
+    ))),
+    _identifier: $ => seq(
+      /[A-Za-z_]/,
+      /\w*/,
+    ),
+    glob: $ => prec(-1, repeat1(choice(
+      seq(
+        '[',
+        repeat(choice(
+          /\\[\[\]\(\)\\]/,
+          /[^\[\]\(\)\\]/,
+        )),
+        ']',
+      ),
+      /\\[\[\]\(\)\\]/,
+      /[^\[\]\(\)\\]/,
+    ))),
+    _simple_variable_name2: $ => alias($._identifier, $.variable_name),
   },
 });
