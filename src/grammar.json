@@ -3114,7 +3114,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "_subscript_flags_with_using_pattern"
+                "name": "_subscript_pattern_flags"
               },
               "named": true,
               "value": "subscript_flag"
@@ -4083,58 +4083,49 @@
         }
       ]
     },
-    "_subscript_flag_using_pattern": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "r"
-        },
-        {
-          "type": "STRING",
-          "value": "R"
-        },
-        {
-          "type": "STRING",
-          "value": "i"
-        },
-        {
-          "type": "STRING",
-          "value": "I"
-        }
-      ]
-    },
-    "_subscript_flags_with_using_pattern": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_subscript_flag"
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_subscript_flag_using_pattern"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
+    "_subscript_pattern_flags": {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_subscript_flag"
+            }
+          },
+          {
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_subscript_flag"
+                "type": "STRING",
+                "value": "r"
               },
               {
-                "type": "SYMBOL",
-                "name": "_subscript_flag_using_pattern"
+                "type": "STRING",
+                "value": "R"
+              },
+              {
+                "type": "STRING",
+                "value": "i"
+              },
+              {
+                "type": "STRING",
+                "value": "I"
               }
             ]
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_subscript_pattern_flags"
+            }
           }
-        }
-      ]
+        ]
+      }
     }
   },
   "extras": [

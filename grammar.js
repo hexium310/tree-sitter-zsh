@@ -183,7 +183,7 @@ module.exports = grammar(bashGrammar, {
       ),
       seq(
         '(',
-        alias($._subscript_flags_with_using_pattern, $.subscript_flag),
+        alias($._subscript_pattern_flags, $.subscript_flag),
         ')',
         repeat(
           choice(
@@ -289,17 +289,10 @@ module.exports = grammar(bashGrammar, {
       // TODO: Support using `)` as a separator or a expression
       /[snb](\)[^)]+\)|[^)]+)/,
     ),
-    _subscript_flag_using_pattern: $ => choice(
-      'r',
-      'R',
-      'i',
-      'I',
-    ),
-    // Required to unify a node of subscript flags
-    _subscript_flags_with_using_pattern: $ => seq(
+    _subscript_pattern_flags: $ => prec.left(seq(
       repeat($._subscript_flag),
-      $._subscript_flag_using_pattern,
-      repeat(choice($._subscript_flag, $._subscript_flag_using_pattern)),
-    ),
+      choice('r', 'R', 'i', 'I'),
+      repeat($._subscript_pattern_flags)
+    )),
   },
 });
