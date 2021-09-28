@@ -116,7 +116,7 @@ echo ${abc:
   (command (command_name (word)) (expansion (modifier) (variable_name)))
   (command (command_name (word)) (expansion (modifier) (variable_name)))
   (command (command_name (word)) (expansion (modifier) (variable_name)))
-  (command (command_name (word)) (expansion (variable_name) (modifier (regex))))
+  (command (command_name (word)) (expansion (variable_name) (modifier (glob))))
   (command (command_name (word)) (expansion (variable_name)))
   (command (command_name (word)) (expansion (variable_name)))
   (command (command_name (word)) (expansion (modifier) (variable_name)))
@@ -154,13 +154,13 @@ F="${G%% *}"
 (program
   (variable_assignment
     (variable_name)
-    (string (expansion (variable_name) (subscript (number)) (modifier (regex)))))
+    (string (expansion (variable_name) (subscript (number)) (modifier (glob)))))
   (variable_assignment
     (variable_name)
-    (string (expansion (variable_name) (modifier (regex)))))
+    (string (expansion (variable_name) (modifier (glob)))))
   (variable_assignment
     (variable_name)
-    (string (expansion (variable_name) (modifier (regex))))))
+    (string (expansion (variable_name) (modifier (glob))))))
 
 ===================================
 Variable expansions in strings
@@ -200,6 +200,7 @@ A=${B//:;;/$'\n'}
 C=${D/;\ *;|}
 
 A=${B## *}
+A=${B## aa #}
 C=${D//#* -E /}
 C=${D:/#* -E /}
 F=${G% *}
@@ -212,24 +213,27 @@ J=${K:^^arr}
 ---
 
 (program
-  (variable_assignment (variable_name) (expansion (variable_name) (modifier (regex))))
+  (variable_assignment (variable_name) (expansion (variable_name) (modifier (glob) (ansii_c_string))))
   (comment)
-  (variable_assignment (variable_name) (expansion (variable_name) (modifier (regex))))
+  (variable_assignment (variable_name) (expansion (variable_name) (modifier (glob))))
   (variable_assignment
     (variable_name)
-    (expansion (variable_name) (modifier (regex))))
+    (expansion (variable_name) (modifier (glob))))
   (variable_assignment
     (variable_name)
-    (expansion (variable_name) (modifier (regex))))
+    (expansion (variable_name) (modifier (glob))))
   (variable_assignment
     (variable_name)
-    (expansion (variable_name) (modifier (regex))))
+    (expansion (variable_name) (modifier (glob))))
   (variable_assignment
     (variable_name)
-    (expansion (variable_name) (modifier (regex))))
+    (expansion (variable_name) (modifier (glob))))
   (variable_assignment
     (variable_name)
-    (expansion (variable_name) (modifier (regex))))
+    (expansion (variable_name) (modifier (glob))))
+  (variable_assignment
+    (variable_name)
+    (expansion (variable_name) (modifier (glob))))
   (variable_assignment
     (variable_name)
     (expansion (variable_name) (modifier (word))))
@@ -352,7 +356,7 @@ cat ${BAR} ${ABC=def} ${GHI:?jkl}
   (test_command
     (binary_expression
       (string (simple_expansion (variable_name)))
-      (string (expansion (variable_name) (modifier (regex)))))))
+      (string (expansion (variable_name) (modifier (glob)))))))
 
 =============================
 Words ending with '$'

@@ -919,11 +919,6 @@
     }
   },
   {
-    "type": "glob",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "heredoc_body",
     "named": true,
     "fields": {},
@@ -1070,15 +1065,15 @@
           "named": true
         },
         {
+          "type": "glob",
+          "named": true
+        },
+        {
           "type": "number",
           "named": true
         },
         {
           "type": "parenthesized_expression",
-          "named": true
-        },
-        {
-          "type": "regex",
           "named": true
         },
         {
@@ -2108,6 +2103,10 @@
   {
     "type": "function",
     "named": false
+  },
+  {
+    "type": "glob",
+    "named": true
   },
   {
     "type": "h",

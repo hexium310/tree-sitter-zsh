@@ -1,5 +1,22 @@
 const bashGrammar = require('tree-sitter-bash/grammar');
 
+const glob = ($, excludes = '') => {
+  const topLevelExclude = new RegExp(`[^$}\\\]\\n\\\\${ excludes }]`);
+
+  return alias(prec(-1, token.immediate(repeat1(choice(
+    seq(
+      '[',
+      repeat(choice(
+        seq('\\', /./),
+        /[^}\]\n\\]/,
+      )),
+      ']',
+    ),
+    seq('\\', /./),
+    topLevelExclude,
+  )))), $.glob);
+};
+
 module.exports = grammar(bashGrammar, {
   name: 'zsh',
   inline: ($, previous) => [
@@ -85,7 +102,7 @@ module.exports = grammar(bashGrammar, {
         choice('#', '##', '%', '%%', ':#'),
         optional(choice(
           $._literal,
-          $.regex,
+          glob($),
         )),
       ),
       seq(
@@ -105,11 +122,14 @@ module.exports = grammar(bashGrammar, {
       ),
       seq(
         choice('/', '//', ':/'),
-        choice(
+        optional(choice(
           $._literal,
-          $.regex,
-        ),
-        optional(seq('/', $._literal)),
+          glob($, '/'),
+        )),
+        optional(seq(
+          '/',
+          optional($._literal)
+        )),
       ),
       repeat1($._history_modifier),
     ),
@@ -145,7 +165,7 @@ module.exports = grammar(bashGrammar, {
         repeat(choice(
           $.expansion,
           $.simple_expansion,
-          $.glob,
+          glob($, ','),
         )),
       ),
     ),
@@ -244,18 +264,6 @@ module.exports = grammar(bashGrammar, {
       /[A-Za-z_]/,
       /\w*/,
     ),
-    glob: $ => prec(-1, repeat1(choice(
-      seq(
-        '[',
-        repeat(choice(
-          /\\[\[\]\(\)\\]/,
-          /[^\[\]\(\)\\]/,
-        )),
-        ']',
-      ),
-      /\\[\[\]\(\)\\]/,
-      /[^\[\]\(\)\\]/,
-    ))),
     _simple_variable_name2: $ => alias($._identifier, $.variable_name),
   },
 });
