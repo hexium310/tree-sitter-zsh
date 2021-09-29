@@ -19,14 +19,12 @@ Words with special characters
 =============================
 
 echo {o[k]}
-echo }}}
-echo ]]] ===
+echo ]]] \===
 
 ---
 
 (program
   (command (command_name (word)) (concatenation (word) (word)))
-  (command (command_name (word)) (concatenation))
   (command (command_name (word)) (concatenation) (word)))
 
 =============================
@@ -44,13 +42,14 @@ echo $abc
 Special variable expansions
 =============================
 
-echo $# $* $@ $!
+echo $0 $# $* $@ $!
 
 ---
 
 (program
   (command
     (command_name (word))
+    (simple_expansion (special_variable_name))
     (simple_expansion (special_variable_name))
     (simple_expansion (special_variable_name))
     (simple_expansion (special_variable_name))
@@ -62,11 +61,41 @@ Variable expansions
 
 echo ${}
 echo ${#}
+echo ${#abc}
+echo ${#abc[@]}
+echo ${^}
+echo ${~}
+echo ${=}
+echo ${^abc}
+echo ${=abc}
+echo ${~abc}
+echo ${+abc}
+echo ${^~abc}
+echo ${^~#abc}
+echo ${^~+abc}
 echo ${var1#*#}
-echo ${!abc}
+echo ${1}
+echo ${10}
+echo ${#10}
 echo ${abc}
+echo ${abc-def}
+echo ${abc- }
 echo ${abc:-def}
 echo ${abc:- }
+echo ${abc+def}
+echo ${abc+ }
+echo ${abc:+def}
+echo ${abc:+ }
+echo ${abc=def}
+echo ${abc= }
+echo ${abc:=def}
+echo ${abc:= }
+echo ${abc::=def}
+echo ${abc::= }
+echo ${abc?def}
+echo ${abc? }
+echo ${abc:?def}
+echo ${abc:? }
 echo ${abc:
 }
 
@@ -74,19 +103,49 @@ echo ${abc:
 
 (program
   (command (command_name (word)) (expansion))
-  (command (command_name (word)) (expansion))
-  (command (command_name (word)) (expansion (variable_name) (word)))
+  (command (command_name (word)) (expansion (special_variable_name)))
+  (command (command_name (word)) (expansion (modifier) (variable_name)))
+  (command (command_name (word)) (expansion (modifier) (variable_name) (subscript (special_subscript))))
+  (command (command_name (word)) (expansion (modifier)))
+  (command (command_name (word)) (expansion (modifier)))
+  (command (command_name (word)) (expansion (modifier)))
+  (command (command_name (word)) (expansion (modifier) (variable_name)))
+  (command (command_name (word)) (expansion (modifier) (variable_name)))
+  (command (command_name (word)) (expansion (modifier) (variable_name)))
+  (command (command_name (word)) (expansion (modifier) (variable_name)))
+  (command (command_name (word)) (expansion (modifier) (variable_name)))
+  (command (command_name (word)) (expansion (modifier) (variable_name)))
+  (command (command_name (word)) (expansion (modifier) (variable_name)))
+  (command (command_name (word)) (expansion (variable_name) (modifier (glob))))
   (command (command_name (word)) (expansion (variable_name)))
   (command (command_name (word)) (expansion (variable_name)))
-  (command (command_name (word)) (expansion (variable_name) (word)))
+  (command (command_name (word)) (expansion (modifier) (variable_name)))
   (command (command_name (word)) (expansion (variable_name)))
-  (command (command_name (word)) (expansion (variable_name))))
+  (command (command_name (word)) (expansion (variable_name) (modifier (word))))
+  (command (command_name (word)) (expansion (variable_name) (modifier)))
+  (command (command_name (word)) (expansion (variable_name) (modifier (word))))
+  (command (command_name (word)) (expansion (variable_name) (modifier)))
+  (command (command_name (word)) (expansion (variable_name) (modifier (word))))
+  (command (command_name (word)) (expansion (variable_name) (modifier)))
+  (command (command_name (word)) (expansion (variable_name) (modifier (word))))
+  (command (command_name (word)) (expansion (variable_name) (modifier)))
+  (command (command_name (word)) (expansion (variable_name) (modifier (word))))
+  (command (command_name (word)) (expansion (variable_name) (modifier)))
+  (command (command_name (word)) (expansion (variable_name) (modifier (word))))
+  (command (command_name (word)) (expansion (variable_name) (modifier)))
+  (command (command_name (word)) (expansion (variable_name) (modifier (word))))
+  (command (command_name (word)) (expansion (variable_name) (modifier)))
+  (command (command_name (word)) (expansion (variable_name) (modifier (word))))
+  (command (command_name (word)) (expansion (variable_name) (modifier)))
+  (command (command_name (word)) (expansion (variable_name) (modifier (word))))
+  (command (command_name (word)) (expansion (variable_name) (modifier)))
+  (command (command_name (word)) (expansion (variable_name) (modifier))))
 
 ===================================
 Variable expansions with operators
 ===================================
 
-A="${B[0]# }"
+A="${B[1]# }"
 C="${D/#* -E /}"
 F="${G%% *}"
 
@@ -95,13 +154,13 @@ F="${G%% *}"
 (program
   (variable_assignment
     (variable_name)
-    (string (expansion (subscript (variable_name) (word)))))
+    (string (expansion (variable_name) (subscript (number)) (modifier (glob)))))
   (variable_assignment
     (variable_name)
-    (string (expansion (variable_name) (regex))))
+    (string (expansion (variable_name) (modifier (glob)))))
   (variable_assignment
     (variable_name)
-    (string (expansion (variable_name) (word) (word)))))
+    (string (expansion (variable_name) (modifier (glob))))))
 
 ===================================
 Variable expansions in strings
@@ -118,16 +177,18 @@ A="${b=$c/$d}"
     (string
       (expansion
         (variable_name)
-        (concatenation (simple_expansion (variable_name)) (word)))))
+        (modifier
+          (concatenation (simple_expansion (variable_name)) (word))))))
   (variable_assignment
     (variable_name)
     (string
       (expansion
         (variable_name)
-        (concatenation
-          (simple_expansion (variable_name))
-          (word)
-          (simple_expansion (variable_name)))))))
+        (modifier
+          (concatenation
+            (simple_expansion (variable_name))
+            (word)
+            (simple_expansion (variable_name))))))))
 
 ===================================
 Variable expansions with regexes
@@ -138,12 +199,144 @@ A=${B//:;;/$'\n'}
 # escaped space
 C=${D/;\ *;|}
 
+A=${B## *}
+A=${B## aa #}
+C=${D//#* -E /}
+C=${D:/#* -E /}
+F=${G% *}
+H=${I:# *}
+J=${K:|arr}
+J=${K:*arr}
+J=${K:^arr}
+J=${K:^^arr}
+
 ---
 
 (program
-  (variable_assignment (variable_name) (expansion (variable_name) (regex)))
+  (variable_assignment (variable_name) (expansion (variable_name) (modifier (glob) (ansii_c_string))))
   (comment)
-  (variable_assignment (variable_name) (expansion (variable_name) (regex))))
+  (variable_assignment (variable_name) (expansion (variable_name) (modifier (glob))))
+  (variable_assignment
+    (variable_name)
+    (expansion (variable_name) (modifier (glob))))
+  (variable_assignment
+    (variable_name)
+    (expansion (variable_name) (modifier (glob))))
+  (variable_assignment
+    (variable_name)
+    (expansion (variable_name) (modifier (glob))))
+  (variable_assignment
+    (variable_name)
+    (expansion (variable_name) (modifier (glob))))
+  (variable_assignment
+    (variable_name)
+    (expansion (variable_name) (modifier (glob))))
+  (variable_assignment
+    (variable_name)
+    (expansion (variable_name) (modifier (glob))))
+  (variable_assignment
+    (variable_name)
+    (expansion (variable_name) (modifier (word))))
+  (variable_assignment
+    (variable_name)
+    (expansion (variable_name) (modifier (word))))
+  (variable_assignment
+    (variable_name)
+    (expansion (variable_name) (modifier (word))))
+  (variable_assignment
+    (variable_name)
+    (expansion (variable_name) (modifier (word)))))
+
+===================================
+Variable expansions with flags
+===================================
+
+echo ${()abc}
+echo ${(F)abc}
+echo ${(f)abc}
+echo ${(z)abc}
+echo ${(#%@AabcCDefFiknoOPQtuUvVwWXz0p~mSBEMNR)abc}
+echo ${(g.coe.)abc}
+echo ${(Z+Cn+)abc}
+echo ${(qqq)abc}
+echo ${(q+)abc}
+echo ${(j:,:)abc}
+echo ${(ps:,:)abc}
+echo ${(l:5::0::-:)abc}
+echo ${(r:5::0::-:n)abc}
+
+---
+
+(program
+  (command
+    (command_name (word))
+    (expansion (variable_name)))
+  (command
+    (command_name (word))
+    (expansion (parameter_expansion_flag) (variable_name)))
+  (command
+    (command_name (word))
+    (expansion (parameter_expansion_flag) (variable_name)))
+  (command
+    (command_name (word))
+    (expansion (parameter_expansion_flag) (variable_name)))
+  (command
+    (command_name (word))
+    (expansion (parameter_expansion_flag) (variable_name)))
+  (command
+    (command_name (word))
+    (expansion (parameter_expansion_flag) (variable_name)))
+  (command
+    (command_name (word))
+    (expansion (parameter_expansion_flag) (variable_name)))
+  (command
+    (command_name (word))
+    (expansion (parameter_expansion_flag) (variable_name)))
+  (command
+    (command_name (word))
+    (expansion (parameter_expansion_flag) (variable_name)))
+  (command
+    (command_name (word))
+    (expansion (parameter_expansion_flag) (variable_name)))
+  (command
+    (command_name (word))
+    (expansion (parameter_expansion_flag) (variable_name)))
+  (command
+    (command_name (word))
+    (expansion (parameter_expansion_flag) (variable_name)))
+  (command
+    (command_name (word))
+    (expansion (parameter_expansion_flag) (variable_name))))
+
+===================================
+Variable expansions with modifiers
+===================================
+
+echo ${abc:P}
+echo ${abc:P:h:h2:t:t2}
+echo ${abc:s/aaa/bbb}
+
+---
+
+(program
+  (command
+    (command_name
+      (word))
+    (expansion
+      (variable_name)
+      (modifier)))
+  (command
+    (command_name
+      (word))
+    (expansion
+      (variable_name)
+      (modifier)))
+  (command
+    (command_name
+      (word))
+    (expansion
+      (variable_name)
+      (modifier))))
 
 ===================================
 Other variable expansion operators
@@ -158,12 +351,12 @@ cat ${BAR} ${ABC=def} ${GHI:?jkl}
   (command
     (command_name (word))
     (expansion (variable_name))
-    (expansion (variable_name) (word))
-    (expansion (variable_name) (word)))
+    (expansion (variable_name) (modifier (word)))
+    (expansion (variable_name) (modifier (word))))
   (test_command
     (binary_expression
       (string (simple_expansion (variable_name)))
-      (string (expansion (variable_name) (concatenation (word)))))))
+      (string (expansion (variable_name) (modifier (glob)))))))
 
 =============================
 Words ending with '$'
@@ -324,7 +517,6 @@ a=()
 b=(1 2 3)
 
 echo ${a[@]}
-echo ${#b[@]}
 
 a[$i]=50
 a+=(foo "bar" $(baz))
@@ -334,10 +526,9 @@ a+=(foo "bar" $(baz))
 (program
   (variable_assignment (variable_name) (array))
   (variable_assignment (variable_name) (array (word) (word) (word)))
-  (command (command_name (word)) (expansion (subscript (variable_name) (word))))
-  (command (command_name (word)) (expansion (subscript (variable_name) (word))))
+  (command (command_name (word)) (expansion (variable_name) (subscript (special_subscript))))
   (variable_assignment
-    (subscript (variable_name) (simple_expansion (variable_name)))
+    (subscript (variable_name) (subscript (simple_expansion (variable_name))))
     (word))
   (variable_assignment
     (variable_name)

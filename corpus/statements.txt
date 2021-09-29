@@ -302,9 +302,9 @@ Test commands with regexes
 =============================
 
 [[ "35d8b" =~ ^[0-9a-fA-F] ]]
-[[ $CMD =~ (^|;)update_terminal_cwd($|;) ]]
+[[ $CMD =~ (^|\;)update_terminal_cwd($|\;) ]]
 [[ ! " ${completions[*]} " =~ " $alias_cmd " ]]
-! [[ "$a" =~ ^a|b\ *c|d$ ]]
+! [[ "$a" =~ ^(a|b)\ *(c|d)$ ]]
 [[ "$1" =~ ^${var}${var}*=..* ]]
 [[ "$1" =~ ^\-${var}+ ]]
 [[ ${var1} == *${var2}* ]]
@@ -325,7 +325,7 @@ Test commands with regexes
   (test_command
     (unary_expression
       (binary_expression
-        (string (expansion (subscript (variable_name) (word))))
+        (string (expansion (variable_name) (subscript (special_subscript))))
         (string (simple_expansion (variable_name))))))
   (negated_command
     (test_command
@@ -513,7 +513,7 @@ export "$(echo ${key} | tr [:lower:] [:upper:])=${p_key#*=}"
         (pipeline
           (command (command_name (word)) (expansion (variable_name)))
           (command (command_name (word)) (concatenation (word)) (concatenation (word)))))
-      (expansion (variable_name) (word)))))
+      (expansion (variable_name) (modifier (glob))))))
 
 =========================================
 Unset commands

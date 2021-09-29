@@ -12,6 +12,6 @@
   },
   "scripts": {
     "build": "tree-sitter generate",
-    "test": "tree-sitter test"
+    "test": "zsh scripts/parse-corpus.zsh && tree-sitter test"
   }
 }
