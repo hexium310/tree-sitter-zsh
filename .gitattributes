@@ -1,1 +1,3 @@
-/src/** linguist-vendored
+/src/** linguist-generated
+/src/scanner.cc -linguist-generated
+/bindings/** linguist-generated
