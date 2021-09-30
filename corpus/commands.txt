@@ -144,11 +144,11 @@ aasdf
     (heredoc_redirect (heredoc_start)))
   (heredoc_body)
   (redirected_statement
-    (command (command_name (word)))
+    (command (command_name (word)) (word))
     (heredoc_redirect (heredoc_start)))
   (heredoc_body)
   (redirected_statement
-    (command (command_name (word)) (word))
+    (command (command_name (word)))
     (heredoc_redirect (heredoc_start)))
   (heredoc_body))
 
