@@ -36,6 +36,14 @@ struct Scanner {
     lexer->advance(lexer, false);
   }
 
+  bool is_special_char(int32_t character) {
+    return character == '\\' ||
+      character == '<' ||
+      character == '>' ||
+      character == '\'' ||
+      character == '"';
+  }
+
   unsigned serialize(char *buffer) {
     if (heredoc_delimiter.length() + 3 >= TREE_SITTER_SERIALIZATION_BUFFER_SIZE) return 0;
     buffer[0] = heredoc_is_raw;
@@ -77,7 +85,13 @@ struct Scanner {
       advance(lexer);
     }
 
-    while (iswalpha(lexer->lookahead) || (quote != 0 && iswspace(lexer->lookahead))) {
+    while (lexer->lookahead != '\0') {
+      if (iswspace(lexer->lookahead) || is_special_char(lexer->lookahead)) {
+        if (quote == 0 || quote == lexer->lookahead) {
+          break;
+        }
+      }
+
       heredoc_delimiter += lexer->lookahead;
       advance(lexer);
     }
