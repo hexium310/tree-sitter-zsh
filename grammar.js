@@ -50,6 +50,17 @@ module.exports = grammar(bashGrammar, {
     ],
   ],
   rules: {
+    simple_expansion: ($, previous) => choice(
+      previous,
+      seq(
+        '$',
+        alias($._leading_modifiers, $.modifier),
+        choice(
+          $._simple_variable_name,
+          $._special_variable_name,
+        ),
+      ),
+    ),
     expansion: $ => seq(
       '${',
       optional(seq(
@@ -87,7 +98,7 @@ module.exports = grammar(bashGrammar, {
         /[sFW][^}]+/,
       ),
     ),
-    _leading_modifiers: $ => prec.right(choice(
+    _leading_modifiers: $ => prec.right(-1, choice(
       seq(
         repeat1(choice('^', '=', '~')),
         optional(choice('#', '+')),

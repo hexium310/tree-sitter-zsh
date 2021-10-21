@@ -56,6 +56,29 @@ echo $0 $# $* $@ $!
     (simple_expansion (special_variable_name))))
 
 =============================
+Simple variable expansions with modifiers
+=============================
+
+echo $^abc
+echo $=abc
+echo $~abc
+echo $+abc
+echo $^~abc
+echo $^~#abc
+echo $^~+abc
+
+---
+
+(program
+  (command (command_name (word)) (simple_expansion (modifier) (variable_name)))
+  (command (command_name (word)) (simple_expansion (modifier) (variable_name)))
+  (command (command_name (word)) (simple_expansion (modifier) (variable_name)))
+  (command (command_name (word)) (simple_expansion (modifier) (variable_name)))
+  (command (command_name (word)) (simple_expansion (modifier) (variable_name)))
+  (command (command_name (word)) (simple_expansion (modifier) (variable_name)))
+  (command (command_name (word)) (simple_expansion (modifier) (variable_name))))
+
+=============================
 Variable expansions
 =============================
 
