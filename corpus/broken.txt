@@ -1,0 +1,23 @@
+================================================================================
+Broken: Simple variable expansions with modifiers
+================================================================================
+
+echo $#abc
+
+--------------------------------------------------------------------------------
+
+(program
+; Expected
+; (command
+;   (command_name
+;     (word))
+;   (simple_expansion
+;     (modifier)
+;     (variable_name)))
+  (command
+    (command_name
+      (word))
+    (concatenation
+      (simple_expansion
+        (special_variable_name))
+      (word))))

@@ -2034,40 +2034,76 @@
       "value": "\\$'([^']|\\\\')*'"
     },
     "simple_expansion": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "STRING",
-          "value": "$"
-        },
-        {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "_simple_variable_name"
+              "type": "STRING",
+              "value": "$"
             },
             {
-              "type": "SYMBOL",
-              "name": "_special_variable_name"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_simple_variable_name"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_special_variable_name"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "STRING",
+                    "value": "!"
+                  },
+                  "named": true,
+                  "value": "special_variable_name"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "STRING",
+                    "value": "#"
+                  },
+                  "named": true,
+                  "value": "special_variable_name"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "$"
             },
             {
               "type": "ALIAS",
               "content": {
-                "type": "STRING",
-                "value": "!"
+                "type": "SYMBOL",
+                "name": "_leading_modifiers"
               },
               "named": true,
-              "value": "special_variable_name"
+              "value": "modifier"
             },
             {
-              "type": "ALIAS",
-              "content": {
-                "type": "STRING",
-                "value": "#"
-              },
-              "named": true,
-              "value": "special_variable_name"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_simple_variable_name"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_special_variable_name"
+                }
+              ]
             }
           ]
         }
@@ -2562,7 +2598,7 @@
     },
     "_leading_modifiers": {
       "type": "PREC_RIGHT",
-      "value": 0,
+      "value": -1,
       "content": {
         "type": "CHOICE",
         "members": [
