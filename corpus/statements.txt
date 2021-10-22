@@ -292,8 +292,8 @@ fi
   (if_statement
     (test_command
       (ternary_expression
-        (binary_expression (word) (word))
-        (word) (word)))
+        (binary_expression (number) (number))
+        (number) (number)))
     (command
       (command_name (word)) (word))))
 
@@ -323,10 +323,10 @@ Test commands with regexes
       (simple_expansion (variable_name))
       (regex)))
   (test_command
-    (unary_expression
-      (binary_expression
-        (string (expansion (variable_name) (subscript (special_subscript))))
-        (string (simple_expansion (variable_name))))))
+    (binary_expression
+      (unary_expression
+        (string (expansion (variable_name) (subscript (special_subscript)))))
+        (string (simple_expansion (variable_name)))))
   (negated_command
     (test_command
       (binary_expression
@@ -343,7 +343,7 @@ Test commands with regexes
   (test_command
     (binary_expression
       (expansion (variable_name))
-      (regex)))
+      (glob) (expansion (variable_name)) (glob)))
   (test_command
     (binary_expression
       (string (simple_expansion (variable_name)))
@@ -399,7 +399,7 @@ function do_yet_another_thing {
       (subshell (command (command_name (word)))))
   (function_definition
       (word)
-      (test_command (unary_expression (test_operator) (word))))
+      (test_command (unary_expression (word))))
   (function_definition
     (word)
     (compound_statement
