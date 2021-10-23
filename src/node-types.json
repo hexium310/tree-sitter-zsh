@@ -1387,7 +1387,28 @@
   {
     "type": "simple_expansion",
     "named": true,
-    "fields": {},
+    "fields": {
+      "index1": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "subscript",
+            "named": true
+          }
+        ]
+      },
+      "index2": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "subscript",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,

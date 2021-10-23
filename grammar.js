@@ -31,6 +31,7 @@ module.exports = grammar(bashGrammar, {
     [$._subscript, $._expression2],
     ['unary', 'binary'],
     [
+      $.simple_expansion,
       $._subscript,
       'unary',
       'literal',
@@ -67,6 +68,7 @@ module.exports = grammar(bashGrammar, {
           $._simple_variable_name,
           $._special_variable_name,
         ),
+        optional($._subscripting),
       ),
     ),
     expansion: $ => seq(
