@@ -211,22 +211,30 @@ module.exports = grammar(bashGrammar, {
     ))),
     _conditional_unary_expression: $ => choice(
       prec.right('unary', seq(
-        choice(
+        alias(choice(
           '-a', '-b', '-c', '-d', '-e', '-f', '-g', '-h', '-k',
           '-n', '-o', '-p', '-r', '-s', '-t', '-u', '-v', '-w',
-          '-x', '-z', '-L', '-O', '-G', '-S', '-N', '!',
-        ),
+          '-x', '-z', '-L', '-O', '-G', '-S', '-N',
+        ), $.test_operator),
         $._conditional_expression,
       )),
+      prec.right('unary', seq(
+        '!',
+        $._conditional_expression,
+      ))
     ),
     _conditional_binary_expression: $ => choice(
       prec.left('binary', seq(
         field('left', $._conditional_expression),
-        field('operator', choice(
-          '-nt', '-ot', '-ef', '<', '>',
+        field('operator', alias(choice(
+          '-nt', '-ot', '-ef',
           '-eq', '-ne', '-lt', '-gt', '-le', '-ge',
-          '&&', '||',
-        )),
+        ), $.test_operator)),
+        field('right', $._conditional_expression),
+      )),
+      prec.left('binary', seq(
+        field('left', $._conditional_expression),
+        field('operator', choice('<', '>', '&&', '||')),
         field('right', $._conditional_expression),
       )),
       prec.left('binary', seq(
