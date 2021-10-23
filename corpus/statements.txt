@@ -261,6 +261,8 @@ Test commands
 if [[ "$lsb_dist" != 'Ubuntu' || $(ver_to_int "$lsb_release") < $(ver_to_int '14.04') ]]; then
 	return 1
 fi
+[[ -a asdf ]] && [[ f1 -nt f2 ]]
+(( $+functions[test] ))
 
 ---
 
@@ -275,7 +277,22 @@ fi
           (command_name (word))
           (string (simple_expansion (variable_name))))))
       (command_substitution (command (command_name (word)) (raw_string)))))
-    (command (command_name (word)) (word))))
+    (command (command_name (word)) (word)))
+  (list
+    (test_command
+      (unary_expression
+        (test_operator)
+        (word)))
+    (test_command
+      (binary_expression
+        (word)
+        (test_operator)
+        (word))))
+  (test_command
+    (simple_expansion
+      (modifier)
+      (variable_name)
+      (subscript (variable_name)))))
 
 
 =============================
@@ -292,8 +309,8 @@ fi
   (if_statement
     (test_command
       (ternary_expression
-        (binary_expression (word) (word))
-        (word) (word)))
+        (binary_expression (number) (number))
+        (number) (number)))
     (command
       (command_name (word)) (word))))
 
@@ -323,10 +340,10 @@ Test commands with regexes
       (simple_expansion (variable_name))
       (regex)))
   (test_command
-    (unary_expression
-      (binary_expression
-        (string (expansion (variable_name) (subscript (special_subscript))))
-        (string (simple_expansion (variable_name))))))
+    (binary_expression
+      (unary_expression
+        (string (expansion (variable_name) (subscript (special_subscript)))))
+        (string (simple_expansion (variable_name)))))
   (negated_command
     (test_command
       (binary_expression
@@ -343,7 +360,7 @@ Test commands with regexes
   (test_command
     (binary_expression
       (expansion (variable_name))
-      (regex)))
+      (glob) (expansion (variable_name)) (glob)))
   (test_command
     (binary_expression
       (string (simple_expansion (variable_name)))

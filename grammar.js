@@ -29,7 +29,9 @@ module.exports = grammar(bashGrammar, {
   precedences: ($, previous) => [
     ...previous,
     [$._subscript, $._expression2],
+    ['unary', 'binary'],
     [
+      $.simple_expansion,
       $._subscript,
       'unary',
       'literal',
@@ -50,6 +52,13 @@ module.exports = grammar(bashGrammar, {
     ],
   ],
   rules: {
+    test_command: $ => seq(
+      choice(
+        seq('[', $._conditional_expression, ']'),
+        seq('[[', $._conditional_expression, ']]'),
+        seq('((', $._expression2, '))'),
+      ),
+    ),
     simple_expansion: ($, previous) => choice(
       previous,
       seq(
@@ -59,6 +68,7 @@ module.exports = grammar(bashGrammar, {
           $._simple_variable_name,
           $._special_variable_name,
         ),
+        optional($._subscripting),
       ),
     ),
     expansion: $ => seq(
@@ -179,6 +189,72 @@ module.exports = grammar(bashGrammar, {
           glob($, ','),
         )),
       ),
+    ),
+    _conditional_expression: $ => prec.left(choice(
+      $._conditional_expression_literal,
+      alias($._conditional_unary_expression, $.unary_expression),
+      alias($._conditional_binary_expression, $.binary_expression),
+      alias($._conditional_parenthesized_expression, $.parenthesized_expression),
+    )),
+    _conditional_expression_literal: $ => repeat1(prec.left('literal', choice(
+      $.word,
+      $.string,
+      $.raw_string,
+      $.ansii_c_string,
+      $.expansion,
+      $.simple_expansion,
+      $.string_expansion,
+      $.number,
+      $._simple_variable_name2,
+      $.command_substitution,
+      $.process_substitution,
+    ))),
+    _conditional_unary_expression: $ => choice(
+      prec.right('unary', seq(
+        alias(choice(
+          '-a', '-b', '-c', '-d', '-e', '-f', '-g', '-h', '-k',
+          '-n', '-o', '-p', '-r', '-s', '-t', '-u', '-v', '-w',
+          '-x', '-z', '-L', '-O', '-G', '-S', '-N',
+        ), $.test_operator),
+        $._conditional_expression,
+      )),
+      prec.right('unary', seq(
+        '!',
+        $._conditional_expression,
+      ))
+    ),
+    _conditional_binary_expression: $ => choice(
+      prec.left('binary', seq(
+        field('left', $._conditional_expression),
+        field('operator', alias(choice(
+          '-nt', '-ot', '-ef',
+          '-eq', '-ne', '-lt', '-gt', '-le', '-ge',
+        ), $.test_operator)),
+        field('right', $._conditional_expression),
+      )),
+      prec.left('binary', seq(
+        field('left', $._conditional_expression),
+        field('operator', choice('<', '>', '&&', '||')),
+        field('right', $._conditional_expression),
+      )),
+      prec.left('binary', seq(
+        field('left', $._conditional_expression),
+        // The whitespaces the around operators is need for glob.
+        // If these are not there, parsing the whitespace after an operator fails
+        // because whitespaces is excluded from glob.
+        field('operator', choice(' = ', ' == ', ' != ')),
+        field('right', repeat1(prec.left(choice($._conditional_expression, glob($, '\\\s\'"'))))),
+      )),
+      prec.left('binary', seq(
+        field('left', $._conditional_expression),
+        field('operator', '=~'),
+        field('right', choice($._conditional_expression, $.regex)),
+      )),
+    ),
+    _conditional_parenthesized_expression: $ => seq(
+      '(',
+      $._conditional_expression,
+      ')',
     ),
     _expression2: $ => prec.left(choice(
       $._expression_literal,
